@@ -16,7 +16,7 @@ describe('set function', () => {
   test('will force values to be strings', () => {
     assert.equal(
       set({
-        function: () => () => {},
+        function: () => (param) => { return param },
         boolean: true,
         object: {
           string: 'string',
@@ -27,7 +27,7 @@ describe('set function', () => {
         },
         array: ['string', true, { key: 'value' }, () => {}]
       }),
-      ` function="() => { }" boolean="true" object="{ string: 'string', boolean: true, object: { key: 'value' }, array: [], function: () => { } }" array="[ 'string', true, { key: 'value' }, () => { } ]"`
+      ` function="(param) => { return param; }" boolean="true" object="{ string: 'string', boolean: true, object: { key: 'value' }, array: [], function: () => { } }" array="[ 'string', true, { key: 'value' }, () => { } ]"`
     )
   })
 })
