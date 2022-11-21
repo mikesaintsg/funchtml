@@ -1,22 +1,20 @@
 import * as util from 'util'
 
+export const interpolateUtilInspectedFunctions = function (acc, curr) {
+  curr = Array.isArray(curr) ? curr[1] : curr
+  return typeof curr === 'function'
+    ? acc.replace(util.inspect(curr), curr.toString())
+    : acc
+}
+
 export const toString = function (item: any): string {
   if (item.constructor === Object)
     return Object.entries(item).reduce(
-      (acc, [_key, value]) =>
-        typeof value === 'function'
-          ? acc.replace(util.inspect(value), value.toString())
-          : acc,
+      interpolateUtilInspectedFunctions,
       util.inspect(item)
     )
   if (Array.isArray(item))
-    return item.reduce(
-      (acc, curr) =>
-        typeof curr === 'function'
-          ? acc.replace(util.inspect(curr), curr.toString())
-          : acc,
-      util.inspect(item)
-    )
+    return item.reduce(interpolateUtilInspectedFunctions, util.inspect(item))
   return item.toString()
 }
 

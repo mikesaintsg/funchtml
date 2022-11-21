@@ -16,7 +16,9 @@ describe('set function', () => {
   test('will force values to be strings', () => {
     assert.equal(
       set({
-        function: () => (param) => { return param },
+        function: () => (param) => {
+          return param
+        },
         boolean: true,
         object: {
           string: 'string',
