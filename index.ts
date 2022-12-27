@@ -7,44 +7,39 @@ export const interpolateUtilInspectedFunctions = function (acc, curr) {
     : acc
 }
 
-export const toString = function (item: any): string {
-  if (item.constructor === Object)
-    return Object.entries(item).reduce(
-      interpolateUtilInspectedFunctions,
-      util.inspect(item)
-    )
-  if (Array.isArray(item))
-    return item.reduce(interpolateUtilInspectedFunctions, util.inspect(item))
-  return item.toString()
-}
+export const toStrictString = (item: any): string =>
+  (item.constructor === Object
+    ? Object.entries(item).reduce(
+        interpolateUtilInspectedFunctions,
+        util.inspect(item)
+      )
+    : Array.isArray(item)
+    ? item.reduce(interpolateUtilInspectedFunctions, util.inspect(item))
+    : item.toString()
+  ).replace(/\s+/gm, ' ')
 
-export const set = function (attributes: Object | (() => Object)): string {
-  return Object.entries(attributes).reduce(
+export const set = (attributes: Object | (() => Object)): string =>
+  Object.entries(attributes).reduce(
     (acc, [key, value]) =>
       `${acc} ${key}="${
         typeof value === 'function'
-          ? toString(value()).replace(/\s+/gm, ' ')
-          : toString(value).replace(/\s+/gm, ' ')
+          ? toStrictString(value())
+          : toStrictString(value)
       }"`,
     ''
   )
-}
 
-export const nest = function (
-  ...children: (string | (() => string))[]
-): string {
-  return children
+export const nest = (...children: (string | (() => string))[]): string =>
+  children
     .map((child) => (typeof child === 'function' ? child() : child))
     .join('')
-}
 
-export const element = function (
+export const element = (
   tagName: string,
   selfClose: boolean = false,
   attributes?: Object | (() => Object),
   ...children: (string | (() => string))[]
-): string {
-  return selfClose
+): string =>
+  selfClose
     ? `<${tagName + set(attributes ?? {})}>`
     : `<${tagName + set(attributes ?? {})}>${nest(...children)}</${tagName}>`
-}
