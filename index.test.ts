@@ -2,16 +2,16 @@ import { assert, describe, test } from 'vitest'
 import { element, nest, set } from './index'
 
 describe('set function', () => {
-  test('will generate the attribute pair string', () =>
+  test('will generate an attribute pair string', () =>
     assert.equal(set({ key: 'value' }), ' key="value"'))
 
-  test('will have space between pair strings', () =>
+  test('will generate with space between two attribute pair strings', () =>
     assert.equal(
       set({ key1: 'value1', key2: 'value2' }),
       ' key1="value1" key2="value2"'
     ))
 
-  test('will force function to be string', () =>
+  test('will force the returned function into a string', () =>
     assert.equal(
       set({
         function: () => (param) => {
@@ -21,7 +21,7 @@ describe('set function', () => {
       ` function="(param) => { return param; }"`
     ))
 
-  test('will force boolean to be string', () =>
+  test('will force a boolean into a string', () =>
     assert.equal(
       set({
         boolean: true
@@ -29,26 +29,26 @@ describe('set function', () => {
       ` boolean="true"`
     ))
 
-  test('will force arrays and nested values to be string', () =>
+  test('will force an array and its nested values into a string', () =>
     assert.equal(
       set({
-        array: ['string', true, { key: 'value' }, ['array'], () => {}]
+        array: ['string', true, { key: 'value' }, ['array' , 'array'], () => {}]
       }),
-      ` array="[ 'string', true, { key: 'value' }, [ 'array' ], () => { } ]"`
+      ` array="[ 'string', true, { key: 'value' }, [ 'array', 'array' ], () => { } ]"`
     ))
 
-  test('will force object and nested values to be string', () =>
+  test('will force an object and its nested values to be string', () =>
     assert.equal(
       set({
         object: {
           string: 'string',
           boolean: true,
           object: { key: 'value' },
-          array: [],
+          array: ['array' , 'array'],
           function: () => {}
         }
       }),
-      ` object="{ string: 'string', boolean: true, object: { key: 'value' }, array: [], function: () => { } }"`
+      ` object="{ string: 'string', boolean: true, object: { key: 'value' }, array: [ 'array', 'array' ], function: () => { } }"`
     ))
 })
 
