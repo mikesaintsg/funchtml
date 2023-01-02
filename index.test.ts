@@ -32,7 +32,7 @@ describe('set function', () => {
   test('will force an array and its nested values into a string', () =>
     assert.equal(
       set({
-        array: ['string', true, { key: 'value' }, ['array' , 'array'], () => {}]
+        array: ['string', true, { key: 'value' }, ['array', 'array'], () => {}]
       }),
       ` array="[ 'string', true, { key: 'value' }, [ 'array', 'array' ], () => { } ]"`
     ))
@@ -44,7 +44,7 @@ describe('set function', () => {
           string: 'string',
           boolean: true,
           object: { key: 'value' },
-          array: ['array' , 'array'],
+          array: ['array', 'array'],
           function: () => {}
         }
       }),
