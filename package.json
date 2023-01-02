@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "build": "tsc index.ts --declaration",
     "format": "prettier --write ."
   },
   "devDependencies": {

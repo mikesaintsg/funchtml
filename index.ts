@@ -1,6 +1,6 @@
 import * as util from 'util'
 
-export const interpolateUtilInspectedFunctions = function (acc, curr) {
+export const interpolateUtilInspectedFunctions = (acc: string, curr) => {
   curr = Array.isArray(curr) ? curr[1] : curr
   return typeof curr === 'function'
     ? acc.replace(util.inspect(curr), curr.toString())

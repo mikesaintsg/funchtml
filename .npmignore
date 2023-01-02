@@ -1,0 +1,10 @@
+.idea
+node_modules
+package-lock.json
+yarn.lock
+.gitignore
+.prettierignore
+.prettierrc
+index.test.ts
+.replit
+replit.nix
