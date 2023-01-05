@@ -11,6 +11,16 @@ describe('set function', () => {
       ' key1="value1" key2="value2"'
     ))
 
+  test('will call a function and generate an attribute pair string from result', () =>
+    assert.equal(
+      set(function () {
+        return {
+          key: 'value'
+        }
+      }),
+      ' key="value"'
+    ))
+
   test('will force the returned function into a string', () =>
     assert.equal(
       set({
