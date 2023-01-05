@@ -39,9 +39,14 @@ export const nest = (...children: NestParam[]): string =>
     .map((child) => (typeof child === 'function' ? child() : child))
     .join('')
 
-export const element =
-  (tagName: string, selfClose: boolean = false) =>
-  (attributes?: SetParam, ...children: NestParam[]): string =>
+export type Element = (
+  tagName: string,
+  selfClose?: boolean
+) => (attributes?: SetParam, ...children: NestParam[]) => string
+
+export const element: Element =
+  (tagName, selfClose = false) =>
+  (attributes, ...children) =>
     selfClose
       ? `<${tagName + set(attributes ?? {})}>`
       : `<${tagName + set(attributes ?? {})}>${nest(...children)}</${tagName}>`
