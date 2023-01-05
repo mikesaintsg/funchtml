@@ -34,12 +34,12 @@ export const nest = (...children: (string | (() => string))[]): string =>
     .map((child) => (typeof child === 'function' ? child() : child))
     .join('')
 
-export const element = (
-  tagName: string,
-  selfClose: boolean = false,
-  attributes?: Object | (() => Object),
-  ...children: (string | (() => string))[]
-): string =>
-  selfClose
-    ? `<${tagName + set(attributes ?? {})}>`
-    : `<${tagName + set(attributes ?? {})}>${nest(...children)}</${tagName}>`
+export const element =
+  (tagName: string, selfClose: boolean = false) =>
+  (
+    attributes?: Object | (() => Object),
+    ...children: (string | (() => string))[]
+  ): string =>
+    selfClose
+      ? `<${tagName + set(attributes ?? {})}>`
+      : `<${tagName + set(attributes ?? {})}>${nest(...children)}</${tagName}>`

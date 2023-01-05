@@ -58,20 +58,20 @@ describe('nest function', () =>
 
 describe('element function', () => {
   test('will generate an element string', () =>
-    assert.equal(element('element'), '<element></element>'))
+    assert.equal(element('element')(), '<element></element>'))
 
   test('can generate a selfClosing element string', () =>
-    assert.equal(element('element', true), '<element>'))
+    assert.equal(element('element', true)(), '<element>'))
 
   test('can add attributes to an element string', () =>
     assert.equal(
-      element('element', false, { key1: 'value1', key2: 'value2' }),
+      element('element', false)( { key1: 'value1', key2: 'value2' }),
       '<element key1="value1" key2="value2"></element>'
     ))
 
   test('can add attributes to a selfClosing element string', () =>
     assert.equal(
-      element('element', true, { key1: 'value1', key2: 'value2' }),
+      element('element', true)({ key1: 'value1', key2: 'value2' }),
       '<element key1="value1" key2="value2">'
     ))
 
@@ -79,8 +79,7 @@ describe('element function', () => {
     assert.equal(
       element(
         'element',
-        false,
-        { key1: 'value1', key2: 'value2' },
+        false)({ key1: 'value1', key2: 'value2' },
         'text',
         '<child>'
       ),
@@ -91,8 +90,7 @@ describe('element function', () => {
     assert.equal(
       element(
         'element',
-        true,
-        { key1: 'value1', key2: 'value2' },
+        true)({ key1: 'value1', key2: 'value2' },
         'text',
         '<child>'
       ),
