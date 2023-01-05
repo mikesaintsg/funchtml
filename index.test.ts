@@ -65,7 +65,7 @@ describe('element function', () => {
 
   test('can add attributes to an element string', () =>
     assert.equal(
-      element('element', false)( { key1: 'value1', key2: 'value2' }),
+      element('element', false)({ key1: 'value1', key2: 'value2' }),
       '<element key1="value1" key2="value2"></element>'
     ))
 
@@ -77,9 +77,8 @@ describe('element function', () => {
 
   test('can add children to an element string', () =>
     assert.equal(
-      element(
-        'element',
-        false)({ key1: 'value1', key2: 'value2' },
+      element('element', false)(
+        { key1: 'value1', key2: 'value2' },
         'text',
         '<child>'
       ),
@@ -88,9 +87,8 @@ describe('element function', () => {
 
   test("won't add children to a selfClosing element string", () =>
     assert.equal(
-      element(
-        'element',
-        true)({ key1: 'value1', key2: 'value2' },
+      element('element', true)(
+        { key1: 'value1', key2: 'value2' },
         'text',
         '<child>'
       ),
