@@ -1,28 +1,28 @@
 import * as util from 'util'
 
-export type SetParam = Object | (() => Object)
-export type NestParam = string | (() => string)
-
-export const interpolateUtilInspectedFunctions = (acc: string, curr) => {
+export const interpolateUtilInspectedFunctions = function (acc: string, curr) {
   curr = Array.isArray(curr) ? curr[1] : curr
   return typeof curr === 'function'
     ? acc.replace(util.inspect(curr), curr.toString())
     : acc
 }
 
-export const toStrictString = (item: any): string =>
-  (item.constructor === Object
-    ? Object.entries(item).reduce(
-        interpolateUtilInspectedFunctions,
-        util.inspect(item)
-      )
-    : Array.isArray(item)
-    ? item.reduce(interpolateUtilInspectedFunctions, util.inspect(item))
-    : item.toString()
+export const toStrictString = function (item: any): string {
+  return (
+    item.constructor === Object
+      ? Object.entries(item).reduce(
+          interpolateUtilInspectedFunctions,
+          util.inspect(item)
+        )
+      : Array.isArray(item)
+      ? item.reduce(interpolateUtilInspectedFunctions, util.inspect(item))
+      : item.toString()
   ).replace(/\s+/gm, ' ')
+}
 
-export const set = (attributes: SetParam): string =>
-  typeof attributes === 'function'
+export type SetParam = Object | (() => Object)
+export const set = function (attributes: SetParam): string {
+  return typeof attributes === 'function'
     ? set(attributes())
     : Object.entries(attributes).reduce(
         (acc, [key, value]) =>
@@ -33,20 +33,23 @@ export const set = (attributes: SetParam): string =>
           }"`,
         ''
       )
+}
 
-export const nest = (...children: NestParam[]): string =>
-  children
-    .map((child) => (typeof child === 'function' ? child() : child))
+export type NestParam = any | (() => any)
+export const nest = function (...children: NestParam[]): string {
+  return children
+    .map((child) =>
+      typeof child === 'function'
+        ? toStrictString(child())
+        : toStrictString(child)
+    )
     .join('')
+}
 
-export type Element = (
-  tagName: string,
-  selfClose?: boolean
-) => (attributes?: SetParam, ...children: NestParam[]) => string
-
-export const element: Element =
-  (tagName, selfClose = false) =>
-  (attributes, ...children) =>
-    selfClose
+export const element = function (tagName: string, selfClose = false) {
+  return function (attributes?: SetParam, ...children: NestParam[]): string {
+    return selfClose
       ? `<${tagName + set(attributes ?? {})}>`
       : `<${tagName + set(attributes ?? {})}>${nest(...children)}</${tagName}>`
+  }
+}

@@ -62,9 +62,46 @@ describe('set function', () => {
     ))
 })
 
-describe('nest function', () =>
+describe('nest function', () => {
   test('will generate string of children', () =>
-    assert.equal(nest('text', '<child>'), 'text<child>')))
+    assert.equal(nest('text', '<child>'), 'text<child>'))
+
+  test('will call a function and generate a string of children', () =>
+    assert.equal(
+      nest(
+        () => 'text',
+        () => '<child>'
+      ),
+      'text<child>'
+    ))
+
+  test('will force the returned function into a string', () =>
+    assert.equal(
+      nest(() => (param) => param),
+      `(param) => param`
+    ))
+
+  test('will force a boolean into a string', () =>
+    assert.equal(nest(true), `true`))
+
+  test('will force an array and its nested values into a string', () =>
+    assert.equal(
+      nest(['string', true, { key: 'value' }, ['array', 'array'], () => {}]),
+      `[ 'string', true, { key: 'value' }, [ 'array', 'array' ], () => { } ]`
+    ))
+
+  test('will force an object and its nested values to be string', () =>
+    assert.equal(
+      nest({
+        string: 'string',
+        boolean: true,
+        object: { key: 'value' },
+        array: ['array', 'array'],
+        function: () => {}
+      }),
+      `{ string: 'string', boolean: true, object: { key: 'value' }, array: [ 'array', 'array' ], function: () => { } }`
+    ))
+})
 
 describe('element function', () => {
   test('will generate an element string', () =>
@@ -104,4 +141,25 @@ describe('element function', () => {
       ),
       '<element key1="value1" key2="value2">'
     ))
+})
+
+test('fun example', () => {
+  const html = element('html')
+  const body = element('body')
+  const h1 = element('h1')
+  const h5 = element('h5')
+  const randomNumber = Math.random() * 100
+
+  assert.equal(
+    html(
+      { lang: 'en' },
+      body(
+        {},
+        h1({}, 'Hello World!'),
+        h5({}, 'Here is a Random Number: '),
+        randomNumber
+      )
+    ),
+    `<html lang="en"><body><h1>Hello World!</h1><h5>Here is a Random Number: </h5>${randomNumber}</body></html>`
+  )
 })
