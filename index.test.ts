@@ -1,9 +1,12 @@
 import { assert, describe, test } from 'vitest'
-import { element, nest, set } from './index'
+import { body, element, h1, h5, html, nest, set } from './index'
 
 describe('set function', () => {
   test('will generate an attribute pair string', () =>
     assert.equal(set({ key: 'value' }), ' key="value"'))
+
+  test('will generate just the key if the value is an asterisk *', () =>
+    assert.equal(set({ key: '*' }), ' key'))
 
   test('will generate with space between two attribute pair strings', () =>
     assert.equal(
@@ -144,10 +147,6 @@ describe('element function', () => {
 })
 
 test('fun example', () => {
-  const html = element('html')
-  const body = element('body')
-  const h1 = element('h1')
-  const h5 = element('h5')
   const randomNumber = Math.random() * 100
 
   assert.equal(
@@ -160,6 +159,6 @@ test('fun example', () => {
         randomNumber
       )
     ),
-    `<html lang="en"><body><h1>Hello World!</h1><h5>Here is a Random Number: </h5>${randomNumber}</body></html>`
+    `<!DOCTYPE html><html lang="en"><body><h1>Hello World!</h1><h5>Here is a Random Number: </h5>${randomNumber}</body></html>`
   )
 })
